@@ -22,6 +22,8 @@ public class Price : ValueObject
 
     public decimal Value { get; }
 
+    public static explicit operator decimal(Price price) => price.Value;
+
     protected override IEnumerable<IComparable> GetEqualityComponents()
     {
         yield return Value;

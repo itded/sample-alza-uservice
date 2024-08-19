@@ -14,6 +14,7 @@ public class TextTests
     {
         var result = Text.Create(inputText);
         Assert.True(result.IsSuccess);
+        Assert.True(expectedValue == (string)result.Value);
         Assert.Equal(expectedValue, result.Value.Value);
     }
 

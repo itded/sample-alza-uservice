@@ -37,6 +37,8 @@ public class Text : ValueObject
 
     public string Value { get; }
 
+    public static explicit operator string(Text text) => text.Value;
+
     protected override IEnumerable<IComparable> GetEqualityComponents()
     {
         yield return Value;
