@@ -1,11 +1,9 @@
-﻿using CSharpFunctionalExtensions;
-
-namespace Alza.UService.Domain.Common;
+﻿namespace Alza.UService.Domain.Common;
 
 /// <summary>
 /// Non-negative price
 /// </summary>
-public class Price : ValueObject<Price>
+public class Price : ValueObject
 {
     public static Result<Price> Create(decimal value)
     {
@@ -24,14 +22,8 @@ public class Price : ValueObject<Price>
 
     public decimal Value { get; }
 
-
-    protected override bool EqualsCore(Price other)
+    protected override IEnumerable<IComparable> GetEqualityComponents()
     {
-        return Value == other.Value;
-    }
-
-    protected override int GetHashCodeCore()
-    {
-        return (Value.GetHashCode() * 397) ^ Value.GetHashCode();
+        yield return Value;
     }
 }

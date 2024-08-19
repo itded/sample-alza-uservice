@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
-
-namespace Alza.UService.Domain.Common;
+﻿namespace Alza.UService.Domain.Common;
 
 /// <summary>
 /// Non-empty short text.
 /// The allowed maximum length is 32 characters that is succifient for the demo project.
 /// </summary>
-public class Text : ValueObject<Text>
+public class Text : ValueObject
 {
     private const int MaxLength = 32;
 
@@ -44,14 +37,8 @@ public class Text : ValueObject<Text>
 
     public string Value { get; }
 
-
-    protected override bool EqualsCore(Text other)
+    protected override IEnumerable<IComparable> GetEqualityComponents()
     {
-        return Value == other.Value;
-    }
-
-    protected override int GetHashCodeCore()
-    {
-        return (Value.GetHashCode() * 397) ^ Value.GetHashCode();
+        yield return Value;
     }
 }

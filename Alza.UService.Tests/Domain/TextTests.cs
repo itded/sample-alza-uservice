@@ -28,7 +28,7 @@ public class TextTests
     {
         var result = Text.Create(inputText);
         Assert.False(result.IsSuccess);
-        Assert.Throws<CSharpFunctionalExtensions.ResultFailureException>(() => result.Value.Value);
+        Assert.Throws<ResultFailureException>(() => result.Value.Value);
     }
 
     [Theory]

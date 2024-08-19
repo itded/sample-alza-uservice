@@ -19,7 +19,7 @@ public class PriceTests
     {
         var result = Price.Create(inputPrice);
         Assert.False(result.IsSuccess);
-        Assert.Throws<CSharpFunctionalExtensions.ResultFailureException>(() => result.Value.Value);
+        Assert.Throws<ResultFailureException>(() => result.Value.Value);
     }
 
     [Theory]
