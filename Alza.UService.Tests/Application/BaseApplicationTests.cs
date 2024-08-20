@@ -1,25 +1,34 @@
-﻿using Alza.UService.Tests.Infrastructure;
+﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Alza.UService.Tests.Application;
 
-/// <remarks>
-/// TODO: Create a common test class, because the dependency should be inverted
-/// </remarks>
-public abstract class BaseApplicationTests : BaseInfrastructureTests
+public abstract class BaseApplicationTests : IClassFixture<TestFixture>
 {
     private readonly TestFixture _testFixture;
 
-    public BaseApplicationTests(TestFixture testFixture):base(testFixture)
+    public BaseApplicationTests(TestFixture testFixture)
     {
         _testFixture = testFixture;
     }
 
-    protected async Task SendCommand<TResult>(IRequest<TResult> command)
+    protected async Task RunScoped(Func<IServiceScope, Task> action)
+    {
+        using var scope = _testFixture.ServiceProvider.CreateScope();
+        await action.Invoke(scope);
+    }
+
+    protected async Task<TResult> SendCommand<TResult>(IServiceScope scope, IRequest<TResult> command)
+    {
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+        return await mediator.Send(command);
+    }
+
+    protected async Task<TResult> SendCommand<TResult>(IRequest<TResult> command)
     {
         using var scope = _testFixture.ServiceProvider.CreateScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        await mediator.Send(command);
+        return await mediator.Send(command);
     }
 }

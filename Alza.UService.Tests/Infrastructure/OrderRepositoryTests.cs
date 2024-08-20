@@ -14,8 +14,6 @@ public class OrderRepositoryTests : BaseInfrastructureTests
     [Fact]
     public async Task Get_order_by_order_id()
     {
-        await CleanData();
-
         // arrange
         var orderItems = new[]
         {

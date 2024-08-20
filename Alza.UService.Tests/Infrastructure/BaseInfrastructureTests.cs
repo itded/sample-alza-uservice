@@ -12,19 +12,6 @@ public abstract class BaseInfrastructureTests : IClassFixture<TestFixture>
         _testFixture = testFixture;
     }
 
-    /// <summary>
-    /// A simple way to clean DB data.
-    /// Please check <see href="https://github.com/jbogard/Respawn"/> to create more intelligent cleaner for the relation database.
-    protected async Task CleanData()
-    {
-        await RunScoped(async scope =>
-        {
-            var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            await appDbContext.Database.EnsureDeletedAsync();
-            await appDbContext.Database.EnsureCreatedAsync();
-        });
-    }
-
     protected async Task RunScoped(Func<IServiceScope, Task> action)
     {
         using var scope = _testFixture.ServiceProvider.CreateScope();

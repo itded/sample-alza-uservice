@@ -11,6 +11,7 @@ public class TestFixture
     {
         var serviceCollection = new ServiceCollection();
 
+        serviceCollection.AddApplicationServices();
         serviceCollection.AddInfrastructureServices();
 
         // Lets pretend that the infrastructure module has different DbContext setup

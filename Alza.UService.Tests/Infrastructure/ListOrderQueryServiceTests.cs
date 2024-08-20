@@ -14,8 +14,6 @@ public class ListOrderQueryServiceTests : BaseInfrastructureTests
     [Fact]
     public async Task Service_returns_empty_list()
     {
-        await CleanData();
-
         await RunScoped(async scope =>
         {
             var orderQueryService = scope.ServiceProvider.GetRequiredService<IListOrderQueryService>();
@@ -28,8 +26,6 @@ public class ListOrderQueryServiceTests : BaseInfrastructureTests
     [Fact]
     public async Task Service_returns_list_contains_single_item()
     {
-        await CleanData();
-
         await RunScoped(async scope =>
         {
             // arrange
@@ -79,8 +75,6 @@ public class ListOrderQueryServiceTests : BaseInfrastructureTests
     [InlineData(10)]
     public async Task Service_returns_list(int orderCount)
     {
-        await CleanData();
-
         await RunScoped(async scope =>
         {
             // arrange
