@@ -8,6 +8,11 @@ namespace Alza.UService.Domain.Orders;
 public class Order : Entity<OrderId>
 {
     public OrderId OrderId { get; }
+    public Text CustomerName { get; }
+    public DateTimeOffset CreatedAt { get; }
+    public OrderItem[] OrderItems { get; }
+
+    public OrderStatus Status => _status;
 
     public bool IsPending  => _status == OrderStatus.Pending;
 
@@ -17,14 +22,14 @@ public class Order : Entity<OrderId>
 
     private OrderStatus _status = OrderStatus.Pending;
 
-    public static Result<Order> Create(Text customerName, DateTimeOffset createdAt, OrderItem[] orderItems)
+    public static Result<Order> Create(OrderId orderId, Text customerName, DateTimeOffset createdAt, OrderItem[] orderItems)
     {
         if (orderItems is null || orderItems.Length == 0)
         {
             return Result.Failure<Order>($"The order items collection cannot be null or empty");
         }
 
-        return new Order(customerName, createdAt, orderItems);
+        return new Order(orderId, customerName, createdAt, orderItems);
     }
 
     public Result Cancel()
@@ -49,7 +54,10 @@ public class Order : Entity<OrderId>
         return Result.Success();
     }
 
-    private Order(Text customerName, DateTimeOffset createdAt, OrderItem[] orderItems) { 
-        OrderId = new OrderId();
+    private Order(OrderId orderId, Text customerName, DateTimeOffset createdAt, OrderItem[] orderItems) { 
+        OrderId = orderId;
+        CustomerName = customerName;
+        CreatedAt = createdAt;
+        OrderItems = orderItems;
     }
 }

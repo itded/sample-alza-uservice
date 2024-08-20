@@ -1,4 +1,4 @@
-namespace Alza.UService.Application.Orders;
+namespace Alza.UService.Application.Orders.Create;
 
 public class OrderItemDto
 {

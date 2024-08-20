@@ -22,9 +22,10 @@ public class AppDbContext : DbContext
         base.OnModelCreating(builder);
         builder.Entity<DboOrder>(entity =>
         {
-            entity.ToTable("orders");
+            entity.ToTable("orders").HasIndex(u => u.OrderNumber).IsUnique();
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+            entity.Property(e => e.OrderNumber);
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getutcdate())");
             entity.Property(e => e.OrderStatus).HasMaxLength(32).HasConversion<OrderStatusConvention>();
             entity.Property(e => e.CustomerName).HasMaxLength(32);

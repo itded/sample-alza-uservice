@@ -1,6 +1,6 @@
 using Alza.UService.Domain.Orders;
 
-namespace Alza.UService.Application.Orders;
+namespace Alza.UService.Application.Orders.List;
 
 public class OrderDto
 {

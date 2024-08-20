@@ -1,6 +1,8 @@
 using Alza.UService.Application.Orders;
+using Alza.UService.Application.Orders.List;
 using Alza.UService.Infrastructure.DataAccess;
 using Alza.UService.Infrastructure.DataAccess.Queries.Orders;
+using Alza.UService.Infrastructure.DataAccess.Repositories.Orders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +12,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
+        services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IListOrderQueryService, ListOrderQueryService>();
         services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()));

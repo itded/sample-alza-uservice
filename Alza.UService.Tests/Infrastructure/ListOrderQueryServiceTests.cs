@@ -1,7 +1,6 @@
-﻿using Alza.UService.Application.Orders;
+﻿using Alza.UService.Application.Orders.List;
 using Alza.UService.Infrastructure.DataAccess;
 using Alza.UService.Infrastructure.DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Alza.UService.Tests.Infrastructure;

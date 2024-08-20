@@ -1,4 +1,4 @@
-using Alza.UService.Application.Orders;
+using Alza.UService.Application.Orders.List;
 using Alza.UService.Domain.Orders;
 using Alza.UService.Infrastructure.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +14,7 @@ internal class ListOrderQueryService : IListOrderQueryService
         _dbContext = dbContext;
     }
 
-    public async Task<IReadOnlyCollection<OrderDto>> List()
+    public async Task<IReadOnlyCollection<OrderDto>> List(CancellationToken cancellationToken = default)
     {
         var result = await _dbContext.Set<DboOrder>()
           .Select(o => new OrderDto()
@@ -30,7 +30,7 @@ internal class ListOrderQueryService : IListOrderQueryService
                   UnitPrice = oi.UnitPrice,
               }).ToList(),
           })
-          .ToListAsync();
+          .ToListAsync(cancellationToken);
 
         return result;
     }
