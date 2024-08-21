@@ -1,4 +1,3 @@
-using System;
 using Alza.UService.Application.Orders;
 using Alza.UService.Domain.Orders;
 using Alza.UService.Infrastructure.DataAccess.Entities;
@@ -27,31 +26,32 @@ internal class OrderRepository : IOrderRepository
 
     public async Task<Guid> Save(Order order, CancellationToken cancellationToken = default)
     {
-        var orderEntity = new DboOrder()
-        {
-            CustomerName = order.CustomerName.Value,
-            OrderNumber = order.OrderId.Value,
-            OrderStatus = order.Status.ToString(),
-            CreatedAt = order.CreatedAt,
-        };
+        var updateEntity = order.OrderDbId != default;
+        DboOrder? orderEntity;
 
-        var orderItemEntities = new List<DboOrderItem>();
-        foreach (var orderItem in order.OrderItems)
+        if (updateEntity)
         {
-            var orderItemEntity = new DboOrderItem()
+            orderEntity = await _dbContext.Set<DboOrder>().Include(x => x.OrderItems)
+                .Where(x => x.Id == order.OrderDbId).FirstOrDefaultAsync(cancellationToken);
+
+            if (orderEntity == null)
             {
-                Order = orderEntity,
-                ProductName = orderItem.ProductName.Value,
-                Quantity = orderItem.Quantity,
-                UnitPrice = orderItem.UnitPrice.Value,
-            };
+                throw new InvalidOperationException($"Entity not found: {order.OrderDbId}");
+            }
 
-            orderItemEntities.Add(orderItemEntity);
+            order.ToEntity(ref orderEntity);
+        }
+        else
+        {
+            orderEntity = new DboOrder();
+            _dbContext.Add(orderEntity);
+
+            order.ToEntity(ref orderEntity);
         }
 
-        await _dbContext.AddRangeAsync(orderItemEntities, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return orderEntity.Id;
     }
+
 }

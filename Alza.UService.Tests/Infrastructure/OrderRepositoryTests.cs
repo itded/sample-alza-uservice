@@ -41,7 +41,7 @@ public class OrderRepositoryTests : BaseInfrastructureTests
 
             var nullOrder = await orderRepository.FindById(5);
 
-            savedOrder = await orderRepository.FindById(order.OrderId);
+            savedOrder = await orderRepository.FindById(order.Id);
         });
 
         Assert.NotNull(savedOrder);

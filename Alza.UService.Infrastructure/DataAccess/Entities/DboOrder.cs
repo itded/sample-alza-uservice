@@ -6,9 +6,9 @@ public class DboOrder
 
     public int OrderNumber { get; set; }
 
-    public required string CustomerName { get; set; }
+    public string CustomerName { get; set; } = null!;
 
-    public required string OrderStatus { get; set; }
+    public string OrderStatus { get; set; } = null!;
 
     public DateTimeOffset CreatedAt { get; set; }
 

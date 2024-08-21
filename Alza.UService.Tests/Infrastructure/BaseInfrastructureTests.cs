@@ -1,5 +1,4 @@
-﻿using Alza.UService.Infrastructure.DataAccess;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Alza.UService.Tests.Infrastructure;
 

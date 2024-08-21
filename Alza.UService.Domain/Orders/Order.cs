@@ -7,7 +7,11 @@ namespace Alza.UService.Domain.Orders;
 /// </summary>
 public class Order : Entity<OrderId>
 {
-    public OrderId OrderId { get; }
+    /// <summary>
+    /// DB reference Id
+    /// </summary>
+    public Guid OrderDbId { get; }
+
     public Text CustomerName { get; }
     public DateTimeOffset CreatedAt { get; }
     public OrderItem[] OrderItems { get; }
@@ -24,12 +28,17 @@ public class Order : Entity<OrderId>
 
     public static Result<Order> Create(OrderId orderId, Text customerName, DateTimeOffset createdAt, OrderItem[] orderItems)
     {
+        return Create(default, orderId, customerName, createdAt, orderItems);
+    }
+
+    public static Result<Order> Create(Guid orderDbId, OrderId orderId, Text customerName, DateTimeOffset createdAt, OrderItem[] orderItems)
+    {
         if (orderItems is null || orderItems.Length == 0)
         {
             return Result.Failure<Order>($"The order items collection cannot be null or empty");
         }
 
-        return new Order(orderId, customerName, createdAt, orderItems);
+        return new Order(orderDbId, orderId, customerName, createdAt, orderItems);
     }
 
     public Result Cancel()
@@ -54,8 +63,10 @@ public class Order : Entity<OrderId>
         return Result.Success();
     }
 
-    private Order(OrderId orderId, Text customerName, DateTimeOffset createdAt, OrderItem[] orderItems) { 
-        OrderId = orderId;
+    private Order(Guid orderDbId, OrderId orderId, Text customerName, DateTimeOffset createdAt, OrderItem[] orderItems)
+    {
+        OrderDbId = orderDbId;
+        Id = orderId;
         CustomerName = customerName;
         CreatedAt = createdAt;
         OrderItems = orderItems;

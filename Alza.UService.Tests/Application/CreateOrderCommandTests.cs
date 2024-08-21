@@ -1,7 +1,4 @@
-﻿using Alza.UService.Application.Orders;
-using Alza.UService.Application.Orders.Create;
-using Alza.UService.Tests.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Alza.UService.Application.Orders.Create;
 
 namespace Alza.UService.Tests.Application;
 
