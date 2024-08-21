@@ -25,11 +25,20 @@ dotnet test Alza.UService.Tests\Alza.UService.Tests.csproj --configuration Relea
 
 1. Run the backend services
 ```
-dotnet run --project Alza.UService.Backend\Alza.UService.Backend.csproj --config
-uration Release --launch-profile https
+dotnet run --project Alza.UService.Backend\Alza.UService.Backend.csproj --configuration Release --launch-profile https
 ```
 
 2. Open the service Swagger page to see available API
 https://localhost:7038/swagger/index.html
 
 The backend project contains samples file **Alza.UService.Backend.http**
+
+============
+
+## Notes
+
+- Strings are limited to 32 characters - just for test purposes
+
+- Prices may contain non-negative values
+
+- An order entity has the number identifier but also stores a mapping to the GUID key in the database.
