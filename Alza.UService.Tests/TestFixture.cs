@@ -14,7 +14,8 @@ public class TestFixture
         serviceCollection.AddApplicationServices();
         serviceCollection.AddInfrastructureServices();
 
-        // Lets pretend that the infrastructure module has different DbContext setup
+        // We know that the infrastructure module has different InMemory DbContext setup
+        serviceCollection.RemoveDescriptor(typeof(DbContextOptions<AppDbContext>));
         serviceCollection.RemoveDescriptor(typeof(AppDbContext));
         serviceCollection.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()));
