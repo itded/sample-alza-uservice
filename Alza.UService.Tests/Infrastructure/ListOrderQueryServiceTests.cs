@@ -58,7 +58,7 @@ public class ListOrderQueryServiceTests : BaseInfrastructureTests
             var orderDto = result.First();
             Assert.Equal(order.CustomerName, orderDto.CustomerName);
             Assert.Equal(order.OrderNumber, orderDto.Number);
-            Assert.Equal(order.OrderStatus, orderDto.Status.ToString());
+            Assert.Equal(order.OrderStatus, orderDto.Status);
 
             Assert.Single(orderDto.Items);
             var orderItemDto = orderDto.Items.First();

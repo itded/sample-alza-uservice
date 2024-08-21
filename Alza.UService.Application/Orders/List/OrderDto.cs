@@ -10,7 +10,7 @@ public class OrderDto
 
     public required DateTime CreatedAt { get; init; }
 
-    public required OrderStatus Status { get; init; }
+    public required string Status { get; init; }
 
     public required IList<OrderItemDto> Items { get; init; }
 }

@@ -1,8 +1,9 @@
 using Alza.UService.Application.Orders.Create;
 using Alza.UService.Application.Orders.List;
+using Alza.UService.Application.Orders.Update;
 using Alza.UService.Backend;
-using Alza.UService.Domain.Orders;
 using Alza.UService.Infrastructure.Extensions;
+using Alza.UService.Infrastructure.Scheduling.Payments;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CreateOrderDto = Alza.UService.Application.Orders.Create.OrderDto;
@@ -10,8 +11,16 @@ using CreateOrderDto = Alza.UService.Application.Orders.Create.OrderDto;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddLogging(x =>
+{
+    x.ClearProviders();
+    x.AddConsole();
+    x.SetMinimumLevel(LogLevel.Debug);
+});
+
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddScheduling();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
 builder.WebHost.UseKestrel(options => options.AddServerHeader = false);
@@ -42,4 +51,15 @@ app.MapGet("/orders", async ([FromServices] IListOrderQueryService listOrderQuer
     return orders;
 });
 
-app.Run();
+app.MapPost("/order/payment", async Task<IResult> ([FromServices] IPaymentQueueService paymentQueueService, OrderPaymentDto orderPayment) =>
+{
+    var paymentItem = new PaymentItem()
+    {
+        Number = orderPayment.Number,
+        OrderPayment = orderPayment.IsPaid ? OrderPaymentEnum.Paid : OrderPaymentEnum.Cancelled
+    };
+    await paymentQueueService.Enqueue(paymentItem);
+    return TypedResults.Ok();
+});
+
+await app.RunAsync();

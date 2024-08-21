@@ -3,6 +3,8 @@ using Alza.UService.Application.Orders.List;
 using Alza.UService.Infrastructure.DataAccess;
 using Alza.UService.Infrastructure.DataAccess.Queries.Orders;
 using Alza.UService.Infrastructure.DataAccess.Repositories.Orders;
+using Alza.UService.Infrastructure.Scheduling;
+using Alza.UService.Infrastructure.Scheduling.Payments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,13 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IListOrderQueryService, ListOrderQueryService>();
         services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()), ServiceLifetime.Singleton);
+        return services;
+    }
+
+    public static IServiceCollection AddScheduling(this IServiceCollection services)
+    {
+        services.AddSingleton<IPaymentQueueService, PaymentQueueService>();
+        services.AddHostedService<SchedulingService>();
         return services;
     }
 

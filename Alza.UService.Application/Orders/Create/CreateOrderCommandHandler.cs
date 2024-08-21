@@ -2,16 +2,19 @@ using Alza.UService.Domain.Common;
 using Alza.UService.Domain.Orders;
 using CSharpFunctionalExtensions;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Alza.UService.Application.Orders.Create;
 
 internal class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Result<Guid>>
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly ILogger<CreateOrderCommandHandler> _logger;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, ILogger<CreateOrderCommandHandler> logger)
     {
         _orderRepository = orderRepository;
+        _logger = logger;
     }
 
     public async Task<Result<Guid>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -19,6 +22,7 @@ internal class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, R
         var order = await _orderRepository.FindById(request.Order.Number, cancellationToken);
         if (order is not null)
         {
+            _logger.LogInformation($"The order already exists: '{request.Order.Number}'");
             return Result.Failure<Guid>($"The order already exists: '{request.Order.Number}'");
         }
 

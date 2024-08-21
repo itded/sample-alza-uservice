@@ -2,6 +2,7 @@
 using Alza.UService.Infrastructure.Extensions;
 using Alza.UService.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Alza.UService.Tests;
 
@@ -10,6 +11,11 @@ public class TestFixture
     public TestFixture()
     {
         var serviceCollection = new ServiceCollection();
+        
+        serviceCollection.AddLogging(x =>
+        {
+            x.ClearProviders();
+        });
 
         serviceCollection.AddApplicationServices();
         serviceCollection.AddInfrastructureServices();

@@ -48,7 +48,7 @@ public class OrderPaymentCommandTests : BaseApplicationTests
             var paidOrder = listResult.First();
             Assert.Equal("Customer 1", paidOrder.CustomerName);
             Assert.Equal(1, paidOrder.Number);
-            Assert.Equal(OrderStatus.Complete, paidOrder.Status);
+            Assert.Equal(OrderStatus.Complete.ToString(), paidOrder.Status);
 
             Assert.Single(paidOrder.Items);
             var paidOrderItem = paidOrder.Items.First();

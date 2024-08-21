@@ -1,6 +1,76 @@
-@Alza.UService.Backend_HostAddress = http://localhost:5274
 
-GET {{Alza.UService.Backend_HostAddress}}/weatherforecast/
+GET https://localhost:7038/orders
 Accept: application/json
 
 ###
+
+POST https://localhost:7038/order/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "number": 1,
+  "customerName": "Customer 1",
+  "items": [
+    {
+      "productName": "Product 1",
+      "quantity": 5,
+      "unitPrice": 5
+    },
+    {
+      "productName": "Product 2",
+      "quantity": 6,
+      "unitPrice": 5.99
+    }
+  ]
+}
+
+###
+
+POST https://localhost:7038/order/payment
+Accept: application/json
+Content-Type: application/json
+
+{
+  "number": 1,
+  "isPaid":false
+}
+
+###
+
+POST https://localhost:7038/order/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "number": 2,
+  "customerName": "Customer 2",
+  "items": [
+    {
+      "productName": "Product 1",
+      "quantity": 5,
+      "unitPrice": 5
+    },
+    {
+      "productName": "Product 2",
+      "quantity": 6,
+      "unitPrice": 5.99
+    }
+  ]
+}
+
+###
+
+POST https://localhost:7038/order/payment
+Accept: application/json
+Content-Type: application/json
+
+{
+  "number": 2,
+  "isPaid":true
+}
+
+###
+
+GET https://localhost:7038/orders
+Accept: application/json

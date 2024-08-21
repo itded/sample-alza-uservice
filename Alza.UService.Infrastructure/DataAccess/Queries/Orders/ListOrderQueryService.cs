@@ -20,7 +20,7 @@ internal class ListOrderQueryService : IListOrderQueryService
           .Select(o => new OrderDto()
           {
               Number = o.OrderNumber,
-              Status = Enum.Parse<OrderStatus>(o.OrderStatus),
+              Status = o.OrderStatus,
               CreatedAt = o.CreatedAt.Date,
               CustomerName = o.CustomerName,
               Items = o.OrderItems.Select(oi => new OrderItemDto()
